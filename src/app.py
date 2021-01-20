@@ -52,8 +52,21 @@ def get_member(member):
 @app.route('/member', methods=['POST'])
 def add_member():
     new_member = request.get_json()
-    jackson_family.add_member(new_member)
-    return jsonify(jackson_family.get_all_members()),200 
+    result = jackson_family.add_member(new_member)
+    if result is None:
+        return jsonify(jackson_family.get_all_members()),200 
+    else:
+        return jsonify(result), 409
+@app.route('/member/<int:id>', methods=['DELETE'])
+def delete_member(id):
+    member = jackson_family.delete_member(id)
+    members = jackson_family.get_all_members()
+    response_body = {
+        "deleted": member,
+        "newFamily": members
+    }
+    return jsonify(response_body)
+
 
     # new rout to add member
     # newmember = FamilyStructure("somethinghere")

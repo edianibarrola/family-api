@@ -23,17 +23,33 @@ class FamilyStructure:
 
     def add_member(self, member):
         # fill this method and update the return
-        if 'id' in member:
-            member['last_name']= self.family_name
-            self._members.append(member)
-        else:
-            member['last_name']= self.family_name
-            member['id'] = self._generateId()
-            self._members.append(member)
+        personExists = False
+        for each in self._members:
+            if member['first_name'] == each['first_name'] and member['age'] == each['age']:
+                personExists = True
 
+        if personExists is not True:
+            if member['first_name'] in self._members:
+                member['last_name']= self.family_name
+                
+                if member not in self._members:
+                    self._members.append(member)
+            else:
+                member['last_name']= self.family_name
+                member['id'] = self._generateId()
+                if member not in self._members:
+                    self._members.append(member)
+        else: 
+            return "Error: User with same Name and Age already exists"
+
+        
+            
     def delete_member(self, id):
-        # fill this method and update the return
-        pass
+            for index in range(len(self._members)):
+                if self._members[index]['id'] == id:
+                    removed = self._members.pop(index)
+                    return removed
+        
 
     def get_member(self, id):
         # fill this method and update the return
